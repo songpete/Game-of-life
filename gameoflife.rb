@@ -1,14 +1,8 @@
 # Conway's Game of Life. Default map size is 80 x 40, 80 cycles
 
-columns = 80
-rows = 40
-cycles = 50
-
-if ARGV.size == 3
-  columns = ARGV[0].to_i
-  rows = ARGV[1].to_i
-  cycles = ARGV[2].to_i
-end
+columns = ARGV[0] ? ARGV[0].to_i : 80
+rows = ARGV[1] ? ARGV[1].to_i : 40
+cycles = ARGV[2] ? ARGV[2].to_i : 200
 
 class Habitat
   attr_reader :columns, :rows
@@ -19,7 +13,7 @@ class Habitat
     @quarter_count = @total_spots/4
     @initial_creatures = []
     @first_map = []
-    (@total_spots/40).times do
+    (@total_spots/100).times do
       @initial_creatures << rand(@quarter_count) + @quarter_count
     end
     
@@ -29,7 +23,9 @@ class Habitat
     
     @initial_creatures.each do |ic|
       @first_map[ic] = "O"
-      @first_map[ic+1] = "O" 
+      @first_map[ic+1] = "O"
+      @first_map[ic+40] = "O"
+      @first_map[ic+2] = "O"
     end
   end
   
@@ -57,18 +53,11 @@ class Habitat
       neighbors << num + (@columns+1) unless bottom_row || right_edge
       
       neighbors.each do |nn|
-        if arr[nn] == "O"
-          n_total += 1
-        end
+        n_total += 1 if arr[nn] == "O"
       end
       
-      if n_total == 3
-        new_arr[num] = "O"
-      end
-      
-      if n_total == 2 && ea == "O"
-        new_arr[num] = "O"
-      end
+      new_arr[num] = "O" if n_total == 3      
+      new_arr[num] = "O" if (n_total == 2 && ea == "O")
     end
     
     return new_arr
@@ -97,7 +86,7 @@ class Habitat
     print_map(f_map)
     if cycles > 0
       @next_map = evolve_once(f_map)
-      sleep 0.2
+      sleep 0.1
       run_simulation(cycles-1, @next_map)
     else
       puts "~~~~~~~~~~~ The End ~~~~~~~~~~~"
