@@ -1,0 +1,11 @@
+Conway's game of life
+
+For a description of the game see: http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
+This file will randomly seed the middle of the map at the beginning of the game. 
+I've been trying out different seeding schemes (density, placement, etc) that tend to produce
+more interesting results. 
+
+- No gems, plugins, etc needed. Should just show in your terminal/console.
+- Default is 80 x 40 map with 50 cycles. Or give it 3 arguments for columns, rows and cycles.
+
